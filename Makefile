@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yoav <yoav@student.42.fr>                  +#+  +:+       +#+         #
+#    By: yrabby <yrabby@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/13 11:26:43 by yoav              #+#    #+#              #
-#    Updated: 2022/07/18 09:35:22 by yoav             ###   ########.fr        #
+#    Updated: 2022/07/23 18:02:32 by yrabby           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,17 +19,17 @@ LIB_FT_PRINTF = $(addprefix $(FT_PRINTF_PATH)/, $(FT_PRINTF_NAME))
 GNL_SRC = get_next_line_utils.c get_next_line.c
 GNL_PATH = get_next_line
 GNL_OBJ = $(addprefix $(GNL_PATH)/, $(GNL_SRC:.c=.o))
-GNL_HED_DIR = $(GNL_PATH)
-GNL_HED = $(addprefix $(GNL_PATH)/, get_next_line.h)
+GNL_HEAD_DIR = $(GNL_PATH)
+GNL_HEAD = $(addprefix $(GNL_PATH)/, get_next_line.h)
 
-HED = $(GNL_HED)
+HEAD = $(GNL_HEAD)
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -I$(GNL_HED_DIR)
-ARFLAGS = rcs
+CFLAGS = -c -Wall -Werror -Wextra -I$(HEAD)
+ARFLAGS = rs
 
-%.o: %.c $(HED)
-	$(CC) -c $(CFLAGS) $< -o $@
+%.o: %.c $(HEAD)
+	$(CC) $(CFLAGS) $< -o $@
 
 all: $(NAME)
 
@@ -37,7 +37,8 @@ $(LIB_FT_PRINTF):
 	$(MAKE) -sC $(FT_PRINTF_PATH)
 
 $(NAME): $(GNL_OBJ) $(LIB_FT_PRINTF)
-	$(AR) $(ARFLAGS) $@ $^
+	cp $(LIB_FT_PRINTF) $@
+	$(AR) $(ARFLAGS) $@ $(GNL_OBJ)
 
 clean:
 	$(MAKE) clean -sC $(FT_PRINTF_PATH)
